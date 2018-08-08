@@ -58,7 +58,7 @@ namespace Aspirin.Api
             services.AddMemoryCache();
             services.AddDistributedRedisCache(options =>
             {
-                options.Configuration = "172.18.0.2";
+                options.Configuration = "redis";
                 options.InstanceName = "redisInstance";
             });
         }

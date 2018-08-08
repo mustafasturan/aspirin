@@ -1,26 +1,38 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+﻿using System.Threading.Tasks;
+using Aspirin.Api.Service;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Aspirin.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class HomeController : ControllerBase
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IMediator _mediator;
 
-        public HomeController(ILoggerFactory loggerFactory)
+        public HomeController(IMediator mediator)
         {
-            _logger = loggerFactory.CreateLogger<HomeController>();
+            _mediator = mediator;
         }
-        [HttpGet]
-        public IActionResult Ping()
-        {
-            var position = new { Latitude = 25, Longitude = 134 };
-            var elapsedMs = 34;
 
-            _logger.LogInformation("Processed {@Position} in {Elapsed:000} ms.", position, elapsedMs);
-            return Ok("Pong");
+        [HttpGet, Route("ping")]
+        public async Task<IActionResult> Ping()
+        {
+            return Ok(await _mediator.Send(new Ping()));
+        }
+
+        [HttpGet, Route("write/{key}")]
+        public async Task<IActionResult> WriteHelloToRedis([FromRoute]string key)
+        {
+            await _mediator.Send(new WriteHelloToRedis(key));
+            return Ok();
+        }
+
+        [HttpGet, Route("read/{key}")]
+        public async Task<IActionResult> ReadFromRedis([FromRoute]string key)
+        {
+            return Ok(await _mediator.Send(new ReadFromRedis(key)));
         }
     }
 }

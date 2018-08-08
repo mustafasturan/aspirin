@@ -58,8 +58,8 @@ namespace Aspirin.Api
             services.AddMemoryCache();
             services.AddDistributedRedisCache(options =>
             {
-                options.Configuration = "127.0.0.1";
-                options.InstanceName = "master";
+                options.Configuration = "172.18.0.2";
+                options.InstanceName = "redisInstance";
             });
         }
 
@@ -99,8 +99,6 @@ namespace Aspirin.Api
             //Application specific service configurations should be added here.
             services.AddSingleton<ILocalizationHelper, LocalizationHelper>();
             services.AddScoped<RequestContext>();
-            //services.AddScoped<IConnectionHelper, ConnectionHelper>();
-            //services.AddScoped<IConfigHelper, ConfigHelper>();
         }
     }
 }

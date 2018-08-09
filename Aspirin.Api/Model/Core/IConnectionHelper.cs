@@ -22,7 +22,7 @@ namespace Aspirin.Api.Model.Core
 
         public IDbConnection GetAspirinDbConnection()
         {
-            var connStr = _configuration["ConnectionStrings:AspirinDB"];
+            var connStr = _configuration["ConnectionStrings:AspirinDb"];
             if (string.IsNullOrWhiteSpace(connStr))
             {
                 throw new ArgumentException("AspirinDB connection string is missing in configuration sources.");

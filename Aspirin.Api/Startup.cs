@@ -1,4 +1,5 @@
 ﻿using Aspirin.Api.Authentication;
+using Aspirin.Api.Data.Setting;
 using Aspirin.Api.Localization;
 using Aspirin.Api.Middleware;
 using Aspirin.Api.Model.Core;
@@ -103,6 +104,7 @@ namespace Aspirin.Api
             services.AddConfigReader();
             services.AddMessagePackSerializer();
             services.AddConnectionHelper();
+            services.AddSettingRepository();
         }
     }
 }

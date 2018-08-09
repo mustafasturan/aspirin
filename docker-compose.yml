@@ -5,10 +5,20 @@ services:
     ports:
       - "8000:80"
     depends_on:
+      - postgres
       - redis
-      - rabbitmq
+      - rabbitmq      
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+  postgres:    
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      LC_ALL: C.UTF-8
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+      TZ: Europe/Istanbul
   redis:
     image: "redis:alpine"
     ports:

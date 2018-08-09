@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Aspirin.Api.Resources;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 
 namespace Aspirin.Api.Localization
@@ -41,6 +42,14 @@ namespace Aspirin.Api.Localization
         {
             var foundCulture = _supportedCultures.FirstOrDefault(c => c.Equals(culture, StringComparison.OrdinalIgnoreCase));
             return string.IsNullOrWhiteSpace(foundCulture) ? GetDefaultCulture() : foundCulture;
+        }
+    }
+
+    public static class LocalizationHelperExtensions
+    {
+        public static void AddLocalizationHelper(this IServiceCollection services)
+        {
+            services.AddSingleton<ILocalizationHelper, LocalizationHelper>();
         }
     }
 }

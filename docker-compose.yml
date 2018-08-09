@@ -3,12 +3,18 @@ services:
   web:
     build: .
     ports:
-        - "8000:80"
+      - "8000:80"
     depends_on:
-        - redis
+      - redis
+      - rabbitmq
     environment:
-        - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Development
   redis:
     image: "redis:alpine"
     ports:
-        - "6379:6379"
+      - "6379:6379"
+  rabbitmq:
+    image: "rabbitmq:3-management"   
+    ports:
+      - "15672:15672"
+      - "5672:5672"

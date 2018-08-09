@@ -21,18 +21,5 @@ namespace Aspirin.Api.Controllers
         {
             return Ok(await _mediator.Send(new Ping()));
         }
-
-        [HttpGet, Route("write/{key}")]
-        public async Task<IActionResult> WriteHelloToRedis([FromRoute]string key)
-        {
-            await _mediator.Send(new WriteHelloToRedis(key));
-            return Ok();
-        }
-
-        [HttpGet, Route("read/{key}")]
-        public async Task<IActionResult> ReadFromRedis([FromRoute]string key)
-        {
-            return Ok(await _mediator.Send(new ReadFromRedis(key)));
-        }
     }
 }

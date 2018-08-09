@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Caching.Redis;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -26,8 +27,6 @@ namespace Aspirin.Api
             Configuration = configuration;
         }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
             ConfigureServicesForMediatr(services);
@@ -56,10 +55,12 @@ namespace Aspirin.Api
             });
 
             services.AddMemoryCache();
+
+            var cacheOptions = Configuration.GetSection("RedisCacheOptions").Get<RedisCacheOptions>();
             services.AddDistributedRedisCache(options =>
             {
-                options.Configuration = "redis";
-                options.InstanceName = "redisInstance";
+                options.Configuration = cacheOptions.Configuration;
+                options.InstanceName = cacheOptions.InstanceName;
             });
         }
 
@@ -97,8 +98,11 @@ namespace Aspirin.Api
         private void ConfigureServicesForAspirin(IServiceCollection services)
         {
             //Application specific service configurations should be added here.
-            services.AddSingleton<ILocalizationHelper, LocalizationHelper>();
             services.AddScoped<RequestContext>();
+            services.AddLocalizationHelper();
+            services.AddConfigReader();
+            services.AddMessagePackSerializer();
+            services.AddConnectionHelper();
         }
     }
 }
